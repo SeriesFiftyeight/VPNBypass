@@ -1,0 +1,360 @@
+<Window x:Class="VpnBypass.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:VpnBypass.Controls"
+        x:Name="Self"
+        Title="VPN Bypass" Width="1220" Height="780" MinWidth="1040" MinHeight="700"
+        WindowStartupLocation="CenterScreen" Icon="Assets/eye.ico"
+        WindowStyle="None" ResizeMode="CanResize"
+        Background="{StaticResource Bg}" Foreground="{StaticResource Text}"
+        FontFamily="{StaticResource Mono}" UseLayoutRounding="True"
+        TextOptions.TextFormattingMode="Display">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="38" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
+
+    <Grid x:Name="Root">
+        <!-- Backdrop -->
+        <c:MatrixRain x:Name="Rain" Opacity="0.12" />
+        <Rectangle IsHitTestVisible="False">
+            <Rectangle.Fill>
+                <RadialGradientBrush RadiusX="0.75" RadiusY="0.8">
+                    <GradientStop Color="#00000000" Offset="0.4" />
+                    <GradientStop Color="#D0000000" Offset="1" />
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="236" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <!-- ============ SIDEBAR ============ -->
+            <Border Background="#C8060A0D" BorderBrush="{StaticResource Line}" BorderThickness="0,0,1,0">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Margin="22,26,18,30">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Assets/eye.ico" Width="42" Height="42" RenderOptions.BitmapScalingMode="HighQuality">
+                                <Image.Effect>
+                                    <DropShadowEffect Color="#00FF9C" BlurRadius="16" ShadowDepth="0" Opacity="0.6" />
+                                </Image.Effect>
+                            </Image>
+                            <Grid Margin="12,0,0,0" VerticalAlignment="Center">
+                                <!-- RGB-split glitch layers -->
+                                <TextBlock x:Name="GlitchA" Text="VPN BYPASS" FontFamily="{StaticResource Display}" FontWeight="Bold" FontSize="21" Foreground="#FF00E5FF" Opacity="0">
+                                    <TextBlock.RenderTransform><TranslateTransform x:Name="GlitchAX" /></TextBlock.RenderTransform>
+                                </TextBlock>
+                                <TextBlock x:Name="GlitchB" Text="VPN BYPASS" FontFamily="{StaticResource Display}" FontWeight="Bold" FontSize="21" Foreground="#FFFF3B5C" Opacity="0">
+                                    <TextBlock.RenderTransform><TranslateTransform x:Name="GlitchBX" /></TextBlock.RenderTransform>
+                                </TextBlock>
+                                <TextBlock FontFamily="{StaticResource Display}" FontWeight="Bold" FontSize="21">
+                                    <Run Text="VPN" Foreground="{StaticResource Text}" /><Run Text=" BYPASS" Foreground="{StaticResource Neon}" />
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                        <TextBlock Text="v2.0 // ZERO-LAG DPI ENGINE" Style="{StaticResource Label}" Margin="2,10,0,0" FontSize="10" />
+                    </StackPanel>
+
+                    <StackPanel DockPanel.Dock="Bottom" Margin="22,0,18,22">
+                        <Border BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="0,16,0,0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <Ellipse x:Name="StatusDot" Width="9" Height="9" Fill="{StaticResource Red}" VerticalAlignment="Center" Effect="{StaticResource RedGlow}" />
+                                    <TextBlock x:Name="StatusText" Margin="10,0,0,0" FontWeight="Bold" FontSize="12" Foreground="{StaticResource Red}" Text="{DynamicResource StatusOffline}" />
+                                </StackPanel>
+                                <TextBlock x:Name="SysInfo" Style="{StaticResource Label}" LineHeight="18" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <RadioButton x:Name="NavControl" Style="{StaticResource NavItem}" Tag="&#xE80F;" Content="{DynamicResource NavControl}" IsChecked="True" Checked="Nav_Checked" />
+                        <RadioButton x:Name="NavModes" Style="{StaticResource NavItem}" Tag="&#xE968;" Content="{DynamicResource NavModes}" Checked="Nav_Checked" />
+                        <RadioButton x:Name="NavSettings" Style="{StaticResource NavItem}" Tag="&#xE713;" Content="{DynamicResource NavSettings}" Checked="Nav_Checked" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- ============ MAIN ============ -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="38" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!-- Title bar -->
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="22,0,0,0">
+                        <TextBlock Text="root@vpnbypass" Foreground="{StaticResource Neon}" FontSize="12" />
+                        <TextBlock Text=":" Foreground="{StaticResource TextDim}" FontSize="12" />
+                        <TextBlock x:Name="Breadcrumb" Text="~/control" Foreground="{StaticResource Cyan}" FontSize="12" />
+                        <TextBlock Text="$" Foreground="{StaticResource TextDim}" FontSize="12" Margin="2,0,0,0" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock x:Name="Clock" Style="{StaticResource Label}" VerticalAlignment="Center" Margin="0,0,16,0" FontSize="11.5" />
+                        <Button Style="{StaticResource ChromeButton}" Content="&#xE921;" Click="Minimize_Click" WindowChrome.IsHitTestVisibleInChrome="True" />
+                        <Button x:Name="MaxButton" Style="{StaticResource ChromeButton}" Content="&#xE922;" Click="Maximize_Click" WindowChrome.IsHitTestVisibleInChrome="True" />
+                        <Button Style="{StaticResource ChromeClose}" Content="&#xE8BB;" Click="Close_Click" WindowChrome.IsHitTestVisibleInChrome="True" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="20,6,22,22">
+
+                    <!-- ============ PAGE: CONTROL ============ -->
+                    <Grid x:Name="PageControl">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="390" />
+                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="16" />
+                            <RowDefinition Height="210" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Core card -->
+                        <ContentControl Grid.RowSpan="3" Style="{StaticResource Card}">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Top" Style="{StaticResource CardTitle}" Text="{DynamicResource CoreTitle}" />
+
+                                <UniformGrid DockPanel.Dock="Bottom" Columns="2" Rows="2">
+                                    <Border Margin="0,0,5,10" BorderBrush="{StaticResource Line}" BorderThickness="1" Padding="12,9" CornerRadius="2">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource Label}" Text="{DynamicResource StatProfile}" />
+                                            <TextBlock x:Name="StatProfile" FontSize="16" FontWeight="Bold" Margin="0,4,0,0" Text="STD-TR" Foreground="{StaticResource Cyan}" />
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Margin="5,0,0,10" BorderBrush="{StaticResource Line}" BorderThickness="1" Padding="12,9" CornerRadius="2">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource Label}" Text="{DynamicResource StatUptime}" />
+                                            <TextBlock x:Name="StatUptime" FontSize="16" FontWeight="Bold" Margin="0,4,0,0" Text="--:--:--" />
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Margin="0,0,5,0" BorderBrush="{StaticResource Line}" BorderThickness="1" Padding="12,9" CornerRadius="2">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource Label}" Text="{DynamicResource StatAvgPing}" />
+                                            <TextBlock x:Name="StatPing" FontSize="16" FontWeight="Bold" Margin="0,4,0,0" Text="···" />
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Margin="5,0,0,0" BorderBrush="{StaticResource Line}" BorderThickness="1" Padding="12,9" CornerRadius="2">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource Label}" Text="{DynamicResource StatLoss}" />
+                                            <TextBlock x:Name="StatLoss" FontSize="16" FontWeight="Bold" Margin="0,4,0,0" Text="···" />
+                                        </StackPanel>
+                                    </Border>
+                                </UniformGrid>
+
+                                <Button x:Name="ConnectButton" DockPanel.Dock="Bottom" Style="{StaticResource NeonButton}" Margin="0,0,0,16" Click="Connect_Click"
+                                        Content="{DynamicResource BtnConnect}" />
+
+                                <StackPanel VerticalAlignment="Center">
+                                    <Viewbox Width="250" Height="250">
+                                        <c:EyeView x:Name="Eye" />
+                                    </Viewbox>
+                                    <TextBlock x:Name="StateText" HorizontalAlignment="Center" Margin="0,8,0,0" FontFamily="{StaticResource Display}" FontWeight="Bold" FontSize="27"
+                                               Foreground="{StaticResource Red}" Text="{DynamicResource StateIdle}">
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect x:Name="StateGlow" Color="#FF3B5C" BlurRadius="16" ShadowDepth="0" Opacity="0.7" />
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                    <TextBlock x:Name="StateSub" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="10,6,10,0"
+                                               Style="{StaticResource Label}" FontSize="11.5" Text="{DynamicResource StateIdleSub}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </ContentControl>
+
+                        <!-- Ping card -->
+                        <ContentControl Grid.Column="2" Style="{StaticResource Card}">
+                            <DockPanel>
+                                <Grid DockPanel.Dock="Top">
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="{DynamicResource PingTitle}" />
+                                    <StackPanel x:Name="Legend" Orientation="Horizontal" HorizontalAlignment="Right" />
+                                </Grid>
+
+                                <Grid DockPanel.Dock="Top" Margin="0,14,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel VerticalAlignment="Center" Margin="0,0,24,0" MinWidth="150">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="AvgValue" Text="···" FontFamily="{StaticResource Display}" FontWeight="Bold" FontSize="50" Foreground="{StaticResource Neon}">
+                                                <TextBlock.Effect>
+                                                    <DropShadowEffect x:Name="AvgGlow" Color="#00FF9C" BlurRadius="22" ShadowDepth="0" Opacity="0.6" />
+                                                </TextBlock.Effect>
+                                            </TextBlock>
+                                            <TextBlock Text="ms" FontSize="15" Foreground="{StaticResource TextDim}" VerticalAlignment="Bottom" Margin="6,0,0,12" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource Label}" Text="{DynamicResource PingAverage}" />
+                                            <TextBlock x:Name="AvgLabel" Style="{StaticResource Label}" Margin="8,0,0,0" FontWeight="Bold" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Border Grid.Column="1" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="2" Padding="4" Background="#40000000">
+                                        <c:Sparkline x:Name="AvgSpark" Height="92" ShowFill="True" Stroke="{StaticResource Neon}"
+                                                     GoodLimit="{Binding GoodLimit, ElementName=Self}" CriticalLimit="{Binding CriticalLimit, ElementName=Self}" />
+                                    </Border>
+                                </Grid>
+
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl x:Name="PingList">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="0,9">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="140" />
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition Width="86" />
+                                                            <ColumnDefinition Width="96" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="Bold" />
+                                                            <TextBlock Text="{Binding Host}" Style="{StaticResource Label}" FontSize="10" Margin="0,2,0,0" />
+                                                        </StackPanel>
+                                                        <c:Sparkline Grid.Column="1" Height="28" Margin="8,0,14,0" Values="{Binding History}" Stroke="{Binding Brush}"
+                                                                     GoodLimit="{Binding GoodLimit, RelativeSource={RelativeSource AncestorType=Window}}" CriticalLimit="{Binding CriticalLimit, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                                        <TextBlock Grid.Column="2" Text="{Binding MsText}" Foreground="{Binding Brush}" FontSize="15" FontWeight="Bold"
+                                                                   HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                                        <StackPanel Grid.Column="3" VerticalAlignment="Center" Margin="14,0,0,0">
+                                                            <Grid Height="5" Background="#18FFFFFF">
+                                                                <Rectangle Fill="{Binding Brush}" HorizontalAlignment="Stretch" RenderTransformOrigin="0,0.5">
+                                                                    <Rectangle.RenderTransform>
+                                                                        <ScaleTransform ScaleX="{Binding Bar}" />
+                                                                    </Rectangle.RenderTransform>
+                                                                </Rectangle>
+                                                            </Grid>
+                                                            <TextBlock Text="{Binding Label}" Foreground="{Binding Brush}" FontSize="9.5" Margin="0,4,0,0" />
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </DockPanel>
+                        </ContentControl>
+
+                        <!-- Terminal card -->
+                        <ContentControl Grid.Column="2" Grid.Row="2" Style="{StaticResource Card}" Padding="16,12">
+                            <DockPanel>
+                                <Grid DockPanel.Dock="Top" Margin="0,0,0,6">
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="{DynamicResource TerminalTitle}" VerticalAlignment="Center" />
+                                    <Button Style="{StaticResource GhostButton}" Padding="10,3" FontSize="10" HorizontalAlignment="Right" Content="{DynamicResource BtnClear}" Click="ClearLog_Click" />
+                                </Grid>
+                                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,4,0,0">
+                                    <TextBlock Text="root@vpnbypass:~$ " Foreground="{StaticResource Neon}" FontSize="12" />
+                                    <Rectangle x:Name="Caret" Width="8" Height="14" Fill="{StaticResource Neon}" />
+                                </StackPanel>
+                                <ListBox x:Name="LogList" Style="{StaticResource LogList}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontSize="11.5" TextWrapping="Wrap">
+                                                <Run Text="{Binding Time, Mode=OneWay}" Foreground="{StaticResource TextFaint}" />
+                                                <Run Text="{Binding Tag, Mode=OneWay}" Foreground="{Binding Brush, Mode=OneWay}" FontWeight="Bold" />
+                                                <Run Text="{Binding Text, Mode=OneWay}" Foreground="{StaticResource Text}" />
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </DockPanel>
+                        </ContentControl>
+                    </Grid>
+
+                    <!-- ============ PAGE: PROFILES ============ -->
+                    <DockPanel x:Name="PageModes" Visibility="Collapsed">
+                        <StackPanel DockPanel.Dock="Top" Margin="2,4,0,18">
+                            <TextBlock Text="{DynamicResource ModesTitle}" FontFamily="{StaticResource Display}" FontWeight="Bold" FontSize="28" />
+                            <TextBlock Text="{DynamicResource ModesSub}" Style="{StaticResource Label}" FontSize="12" Margin="0,6,0,0" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <UniformGrid x:Name="ProfileGrid" Columns="2" VerticalAlignment="Top" />
+                        </ScrollViewer>
+                    </DockPanel>
+
+                    <!-- ============ PAGE: SETTINGS ============ -->
+                    <DockPanel x:Name="PageSettings" Visibility="Collapsed">
+                        <TextBlock DockPanel.Dock="Top" Margin="2,4,0,18" Text="{DynamicResource SettingsTitle}" FontFamily="{StaticResource Display}" FontWeight="Bold" FontSize="28" />
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="18" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+                                    <ContentControl Style="{StaticResource Card}" Margin="0,0,0,18">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource CardTitle}" Text="{DynamicResource SetGeneral}" Margin="0,0,0,8" />
+                                            <CheckBox x:Name="OptAutoConnect" Style="{StaticResource Switch}" Content="{DynamicResource SetAutoConnect}" Click="Option_Click" />
+                                            <CheckBox x:Name="OptAutoStart" Style="{StaticResource Switch}" Content="{DynamicResource SetAutoStart}" Click="AutoStart_Click" />
+                                            <CheckBox x:Name="OptStartTray" Style="{StaticResource Switch}" Content="{DynamicResource SetStartTray}" Click="Option_Click" />
+                                            <CheckBox x:Name="OptCloseTray" Style="{StaticResource Switch}" Content="{DynamicResource SetCloseTray}" Click="Option_Click" />
+                                            <Grid Margin="0,8,0,0">
+                                                <TextBlock Text="{DynamicResource SetLanguage}" VerticalAlignment="Center" FontSize="12.5" />
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                    <Button x:Name="LangTr" Style="{StaticResource GhostButton}" Content="TR" Padding="14,4" Click="Lang_Click" Tag="TR" />
+                                                    <Button x:Name="LangEn" Style="{StaticResource GhostButton}" Content="EN" Padding="14,4" Margin="6,0,0,0" Click="Lang_Click" Tag="EN" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <ContentControl Style="{StaticResource Card}" Margin="0,0,0,18">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource CardTitle}" Text="{DynamicResource SetTools}" Margin="0,0,0,12" />
+                                            <Button Style="{StaticResource GhostButton}" Content="{DynamicResource BtnFlushDns}" HorizontalAlignment="Stretch" Click="FlushDns_Click" />
+                                            <Button Style="{StaticResource GhostButton}" Content="{DynamicResource BtnKillEngine}" HorizontalAlignment="Stretch" Margin="0,10,0,0"
+                                                    Foreground="{StaticResource Red}" Click="KillEngine_Click" />
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <ContentControl Style="{StaticResource Card}">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource CardTitle}" Text="{DynamicResource SetAbout}" Margin="0,0,0,10" />
+                                            <TextBlock Text="VPN BYPASS v2.0" FontWeight="Bold" FontSize="14" />
+                                            <TextBlock Text="{DynamicResource AboutText}" Style="{StaticResource Label}" FontSize="11.5" TextWrapping="Wrap" Margin="0,6,0,0" LineHeight="17" />
+                                            <TextBlock Text="© 2026 SeriesFiftyeight · MIT" Style="{StaticResource Label}" Margin="0,10,0,0" />
+                                        </StackPanel>
+                                    </ContentControl>
+                                </StackPanel>
+
+                                <ContentControl Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource CardTitle}" Text="{DynamicResource SetPing}" Margin="0,0,0,12" />
+                                        <Grid Margin="0,0,0,10">
+                                            <TextBlock Text="{DynamicResource SetGoodMs}" VerticalAlignment="Center" FontSize="12.5" Foreground="{StaticResource Neon}" />
+                                            <TextBox x:Name="InGood" Style="{StaticResource TermBox}" Width="96" Height="32" Padding="8,0" VerticalContentAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" />
+                                        </Grid>
+                                        <Grid Margin="0,0,0,10">
+                                            <TextBlock Text="{DynamicResource SetCritMs}" VerticalAlignment="Center" FontSize="12.5" Foreground="{StaticResource Red}" />
+                                            <TextBox x:Name="InCrit" Style="{StaticResource TermBox}" Width="96" Height="32" Padding="8,0" VerticalContentAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" />
+                                        </Grid>
+                                        <Grid Margin="0,0,0,6">
+                                            <TextBlock Text="{DynamicResource SetInterval}" VerticalAlignment="Center" FontSize="12.5" />
+                                            <TextBox x:Name="InInterval" Style="{StaticResource TermBox}" Width="96" Height="32" Padding="8,0" VerticalContentAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" />
+                                        </Grid>
+                                        <CheckBox x:Name="OptAlert" Style="{StaticResource Switch}" Content="{DynamicResource SetAlert}" />
+                                        <TextBlock Text="{DynamicResource SetTargets}" Style="{StaticResource Label}" FontSize="11.5" Margin="0,10,0,6" />
+                                        <TextBox x:Name="InTargets" Style="{StaticResource TermBox}" Height="128" AcceptsReturn="True" TextWrapping="NoWrap"
+                                                 VerticalScrollBarVisibility="Auto" />
+                                        <Button Style="{StaticResource NeonButton}" Height="42" FontSize="13" Margin="0,16,0,0" Content="{DynamicResource BtnSave}" Click="SavePing_Click" />
+                                    </StackPanel>
+                                </ContentControl>
+                            </Grid>
+                        </ScrollViewer>
+                    </DockPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <!-- CRT scanlines over everything -->
+        <Rectangle Fill="{StaticResource Scanlines}" Opacity="0.16" IsHitTestVisible="False" />
+        <Border BorderBrush="{StaticResource Line}" BorderThickness="1" IsHitTestVisible="False" />
+    </Grid>
+</Window>

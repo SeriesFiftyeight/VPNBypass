@@ -1,0 +1,353 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Palette -->
+    <Color x:Key="C.Bg">#05070A</Color>
+    <Color x:Key="C.Panel">#0A0F14</Color>
+    <Color x:Key="C.Line">#16302A</Color>
+    <Color x:Key="C.Neon">#00FF9C</Color>
+    <Color x:Key="C.Cyan">#00E5FF</Color>
+    <Color x:Key="C.Amber">#FFB020</Color>
+    <Color x:Key="C.Red">#FF3B5C</Color>
+
+    <SolidColorBrush x:Key="Bg" Color="{StaticResource C.Bg}" />
+    <SolidColorBrush x:Key="Panel" Color="#D90A0F14" />
+    <SolidColorBrush x:Key="PanelSolid" Color="{StaticResource C.Panel}" />
+    <SolidColorBrush x:Key="Line" Color="{StaticResource C.Line}" />
+    <SolidColorBrush x:Key="LineBright" Color="#1F5C47" />
+    <SolidColorBrush x:Key="Neon" Color="{StaticResource C.Neon}" />
+    <SolidColorBrush x:Key="NeonSoft" Color="#1A00FF9C" />
+    <SolidColorBrush x:Key="Cyan" Color="{StaticResource C.Cyan}" />
+    <SolidColorBrush x:Key="Amber" Color="{StaticResource C.Amber}" />
+    <SolidColorBrush x:Key="Red" Color="{StaticResource C.Red}" />
+    <SolidColorBrush x:Key="RedSoft" Color="#1FFF3B5C" />
+    <SolidColorBrush x:Key="Text" Color="#D6FFEE" />
+    <SolidColorBrush x:Key="TextDim" Color="#6B8C80" />
+    <SolidColorBrush x:Key="TextFaint" Color="#36524A" />
+
+    <FontFamily x:Key="Mono">Cascadia Mono, Consolas</FontFamily>
+    <FontFamily x:Key="Display">Bahnschrift, Segoe UI</FontFamily>
+    <FontFamily x:Key="Icons">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+
+    <DropShadowEffect x:Key="NeonGlow" Color="{StaticResource C.Neon}" BlurRadius="18" ShadowDepth="0" Opacity="0.75" />
+    <DropShadowEffect x:Key="RedGlow" Color="{StaticResource C.Red}" BlurRadius="18" ShadowDepth="0" Opacity="0.65" />
+
+    <!-- Card with HUD corner brackets -->
+    <Style x:Key="Card" TargetType="ContentControl">
+        <Setter Property="Padding" Value="18,14" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Grid>
+                        <Border Background="{StaticResource Panel}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="3" />
+                        <Path Data="M0,12 L0,0 12,0" Stroke="{StaticResource Neon}" StrokeThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <Path Data="M0,0 L12,0 12,12" Stroke="{StaticResource Neon}" StrokeThickness="2" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                        <Path Data="M0,0 L0,12 12,12" Stroke="{StaticResource Neon}" StrokeThickness="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" />
+                        <Path Data="M12,0 L12,12 0,12" Stroke="{StaticResource Neon}" StrokeThickness="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Opacity="0.5" />
+                        <ContentPresenter Margin="{TemplateBinding Padding}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CardTitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Mono}" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Foreground" Value="{StaticResource Neon}" />
+        <Setter Property="Opacity" Value="0.85" />
+    </Style>
+
+    <Style x:Key="Label" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Mono}" />
+        <Setter Property="FontSize" Value="10.5" />
+        <Setter Property="Foreground" Value="{StaticResource TextDim}" />
+    </Style>
+
+    <!-- Sidebar navigation -->
+    <Style x:Key="NavItem" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{StaticResource TextDim}" />
+        <Setter Property="FontFamily" Value="{StaticResource Mono}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="0,2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid x:Name="root" Background="Transparent" Height="44">
+                        <Border x:Name="bg" Background="{StaticResource NeonSoft}" Opacity="0" CornerRadius="2" />
+                        <Rectangle x:Name="bar" Width="3" Fill="{StaticResource Neon}" HorizontalAlignment="Left" Opacity="0" Effect="{StaticResource NeonGlow}" />
+                        <StackPanel Orientation="Horizontal" Margin="22,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{TemplateBinding Tag}" FontFamily="{StaticResource Icons}" FontSize="16" VerticalAlignment="Center" Margin="0,0,14,0" />
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bg" Property="Opacity" Value="0.5" />
+                            <Setter Property="Foreground" Value="{StaticResource Text}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="bg" Property="Opacity" Value="1" />
+                            <Setter TargetName="bar" Property="Opacity" Value="1" />
+                            <Setter Property="Foreground" Value="{StaticResource Neon}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Big neon action button -->
+    <Style x:Key="NeonButton" TargetType="Button">
+        <Setter Property="Foreground" Value="{StaticResource Bg}" />
+        <Setter Property="Background" Value="{StaticResource Neon}" />
+        <Setter Property="FontFamily" Value="{StaticResource Mono}" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="Height" Value="50" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="glow" Background="{TemplateBinding Background}" CornerRadius="3" Opacity="0.35">
+                            <Border.Effect>
+                                <BlurEffect Radius="22" />
+                            </Border.Effect>
+                        </Border>
+                        <Border x:Name="face" Background="{TemplateBinding Background}" CornerRadius="3" />
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="glow" Property="Opacity" Value="0.75" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="face" Property="Opacity" Value="0.8" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Outline button -->
+    <Style x:Key="GhostButton" TargetType="Button">
+        <Setter Property="Foreground" Value="{StaticResource Neon}" />
+        <Setter Property="BorderBrush" Value="{StaticResource LineBright}" />
+        <Setter Property="FontFamily" Value="{StaticResource Mono}" />
+        <Setter Property="FontSize" Value="11.5" />
+        <Setter Property="Padding" Value="14,8" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="b" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="2" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="Background" Value="{StaticResource NeonSoft}" />
+                            <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource Neon}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Window chrome buttons -->
+    <Style x:Key="ChromeButton" TargetType="Button">
+        <Setter Property="Foreground" Value="{StaticResource TextDim}" />
+        <Setter Property="FontFamily" Value="{StaticResource Icons}" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Width" Value="46" />
+        <Setter Property="Height" Value="34" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="b" Background="Transparent">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="Background" Value="#14FFFFFF" />
+                            <Setter Property="Foreground" Value="{StaticResource Text}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ChromeClose" TargetType="Button" BasedOn="{StaticResource ChromeButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="b" Background="Transparent">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="Background" Value="#E81123" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Toggle switch -->
+    <Style x:Key="Switch" TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{StaticResource Text}" />
+        <Setter Property="FontFamily" Value="{StaticResource Mono}" />
+        <Setter Property="FontSize" Value="12.5" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="0,7" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ContentPresenter VerticalAlignment="Center" />
+                        <Border x:Name="track" Grid.Column="1" Width="40" Height="20" CornerRadius="10" BorderThickness="1"
+                                BorderBrush="{StaticResource LineBright}" Background="Transparent">
+                            <Ellipse x:Name="knob" Width="12" Height="12" Fill="{StaticResource TextDim}" HorizontalAlignment="Left" Margin="4,0" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="track" Property="Background" Value="{StaticResource NeonSoft}" />
+                            <Setter TargetName="track" Property="BorderBrush" Value="{StaticResource Neon}" />
+                            <Setter TargetName="knob" Property="Fill" Value="{StaticResource Neon}" />
+                            <Setter TargetName="knob" Property="HorizontalAlignment" Value="Right" />
+                            <Setter TargetName="knob" Property="Effect" Value="{StaticResource NeonGlow}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Terminal-style text input -->
+    <Style x:Key="TermBox" TargetType="TextBox">
+        <Setter Property="Foreground" Value="{StaticResource Neon}" />
+        <Setter Property="CaretBrush" Value="{StaticResource Neon}" />
+        <Setter Property="SelectionBrush" Value="{StaticResource Neon}" />
+        <Setter Property="Background" Value="#80000000" />
+        <Setter Property="BorderBrush" Value="{StaticResource LineBright}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontFamily" Value="{StaticResource Mono}" />
+        <Setter Property="FontSize" Value="12.5" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="b" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource Neon}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Selectable profile card -->
+    <Style x:Key="ProfileCard" TargetType="RadioButton">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="0,0,12,12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid>
+                        <Border x:Name="b" Background="{StaticResource Panel}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="3" Padding="16,14">
+                            <ContentPresenter />
+                        </Border>
+                        <Rectangle x:Name="bar" Width="3" Fill="{StaticResource Neon}" HorizontalAlignment="Left" Opacity="0" Margin="0,10" Effect="{StaticResource NeonGlow}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource LineBright}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource Neon}" />
+                            <Setter TargetName="b" Property="Background" Value="#1400FF9C" />
+                            <Setter TargetName="bar" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Thin scrollbars -->
+    <Style TargetType="ScrollBar">
+        <Setter Property="Width" Value="6" />
+        <Setter Property="MinWidth" Value="6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Track x:Name="PART_Track" IsDirectionReversed="True">
+                        <Track.Thumb>
+                            <Thumb>
+                                <Thumb.Template>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Border Background="{StaticResource LineBright}" CornerRadius="3" />
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Track.Thumb>
+                    </Track>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LogList" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <ContentPresenter Margin="0,1" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- CRT scanline overlay tile -->
+    <DrawingBrush x:Key="Scanlines" TileMode="Tile" Viewport="0,0,4,4" ViewportUnits="Absolute" Viewbox="0,0,4,4" ViewboxUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <GeometryDrawing Brush="#FF000000">
+                <GeometryDrawing.Geometry>
+                    <RectangleGeometry Rect="0,0,4,2" />
+                </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+</ResourceDictionary>

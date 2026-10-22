@@ -1,0 +1,82 @@
+<UserControl x:Class="VpnBypass.Controls.EyeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="300" Height="300">
+    <UserControl.Resources>
+        <!-- Shared state color; animated between neon (active) and red (idle). -->
+        <SolidColorBrush x:Key="StateBrush" Color="#FF3B5C" />
+        <Geometry x:Key="EyeShape">M 10,80 C 65,0 195,0 250,80 C 195,160 65,160 10,80 Z</Geometry>
+    </UserControl.Resources>
+
+    <Grid>
+        <!-- HUD rings -->
+        <Ellipse Width="296" Height="296" Stroke="{StaticResource StateBrush}" StrokeThickness="1" StrokeDashArray="1 5" Opacity="0.45" RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform><RotateTransform x:Name="Ring1" /></Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Width="262" Height="262" Stroke="{StaticResource Cyan}" StrokeThickness="2" StrokeDashArray="22 10 3 10" Opacity="0.55" RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform><RotateTransform x:Name="Ring2" /></Ellipse.RenderTransform>
+        </Ellipse>
+        <Ellipse Width="236" Height="236" Stroke="{StaticResource StateBrush}" StrokeThickness="1" Opacity="0.18" />
+        <Path Data="M150,0 L150,14 M150,286 L150,300 M0,150 L14,150 M286,150 L300,150" Stroke="{StaticResource StateBrush}" StrokeThickness="2" Opacity="0.8" />
+
+        <!-- The eye: never blinks, keeps scanning left and right -->
+        <Canvas Width="260" Height="160">
+            <Path Data="{StaticResource EyeShape}" Opacity="0.9">
+                <Path.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#2200E5FF" Offset="0" />
+                        <GradientStop Color="#05000000" Offset="1" />
+                    </RadialGradientBrush>
+                </Path.Fill>
+            </Path>
+
+            <Canvas Width="260" Height="160" Clip="{StaticResource EyeShape}">
+                <Canvas Canvas.Left="90" Canvas.Top="40" Width="80" Height="80">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform x:Name="Look" />
+                    </Canvas.RenderTransform>
+                    <Ellipse Width="80" Height="80" Stroke="{StaticResource Cyan}" StrokeThickness="2">
+                        <Ellipse.Fill>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#0B2A33" Offset="0.25" />
+                                <GradientStop Color="#0E6F80" Offset="0.75" />
+                                <GradientStop Color="#00E5FF" Offset="1" />
+                            </RadialGradientBrush>
+                        </Ellipse.Fill>
+                        <Ellipse.Effect>
+                            <DropShadowEffect Color="#00E5FF" BlurRadius="24" ShadowDepth="0" Opacity="0.8" />
+                        </Ellipse.Effect>
+                    </Ellipse>
+                    <Ellipse Canvas.Left="10" Canvas.Top="10" Width="60" Height="60" Stroke="{StaticResource StateBrush}" StrokeThickness="1.5" StrokeDashArray="2 3" RenderTransformOrigin="0.5,0.5">
+                        <Ellipse.RenderTransform><RotateTransform x:Name="IrisSpin" /></Ellipse.RenderTransform>
+                    </Ellipse>
+                    <Ellipse Canvas.Left="24" Canvas.Top="24" Width="32" Height="32" Fill="#020406" />
+                    <Ellipse Canvas.Left="34" Canvas.Top="34" Width="12" Height="12" Fill="{StaticResource StateBrush}" Opacity="0.9">
+                        <Ellipse.Effect>
+                            <DropShadowEffect Color="White" BlurRadius="10" ShadowDepth="0" Opacity="0.6" />
+                        </Ellipse.Effect>
+                    </Ellipse>
+                    <Ellipse Canvas.Left="22" Canvas.Top="18" Width="9" Height="9" Fill="White" Opacity="0.85" />
+                </Canvas>
+
+                <!-- Scan beam -->
+                <Rectangle Width="260" Height="3" Opacity="0.7">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                            <GradientStop Color="#0000FF9C" Offset="0" />
+                            <GradientStop Color="#C000FF9C" Offset="0.5" />
+                            <GradientStop Color="#0000FF9C" Offset="1" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                    <Rectangle.RenderTransform><TranslateTransform x:Name="Beam" /></Rectangle.RenderTransform>
+                </Rectangle>
+            </Canvas>
+
+            <Path Data="{StaticResource EyeShape}" Stroke="{StaticResource StateBrush}" StrokeThickness="3" StrokeLineJoin="Round">
+                <Path.Effect>
+                    <DropShadowEffect x:Name="OutlineGlow" Color="#FF3B5C" BlurRadius="20" ShadowDepth="0" Opacity="0.9" />
+                </Path.Effect>
+            </Path>
+        </Canvas>
+    </Grid>
+</UserControl>

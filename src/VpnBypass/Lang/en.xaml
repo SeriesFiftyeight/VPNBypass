@@ -1,0 +1,65 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=System.Runtime">
+    <s:String x:Key="NavControl">CONTROL</s:String>
+    <s:String x:Key="NavModes">PROFILES</s:String>
+    <s:String x:Key="NavSettings">SETTINGS</s:String>
+    <s:String x:Key="StatusOnline">TUNNEL UP</s:String>
+    <s:String x:Key="StatusOffline">TUNNEL DOWN</s:String>
+
+    <s:String x:Key="CoreTitle">// CORE STATUS</s:String>
+    <s:String x:Key="StateActive">BYPASS ACTIVE</s:String>
+    <s:String x:Key="StateIdle">STANDBY</s:String>
+    <s:String x:Key="StateBusy">CONNECTING...</s:String>
+    <s:String x:Key="StateActiveSub">DPI filter bypassed · 0 ms added latency</s:String>
+    <s:String x:Key="StateIdleSub">Traffic unprotected. Hit CONNECT to engage.</s:String>
+    <s:String x:Key="BtnConnect">▶  CONNECT</s:String>
+    <s:String x:Key="BtnDisconnect">■  DISCONNECT</s:String>
+    <s:String x:Key="StatProfile">PROFILE</s:String>
+    <s:String x:Key="StatUptime">UPTIME</s:String>
+    <s:String x:Key="StatAvgPing">AVG PING</s:String>
+    <s:String x:Key="StatLoss">LOSS</s:String>
+
+    <s:String x:Key="PingTitle">// LIVE PING · LATENCY MATRIX</s:String>
+    <s:String x:Key="PingAverage">AVERAGE</s:String>
+    <s:String x:Key="PingGood">GOOD</s:String>
+    <s:String x:Key="PingWarn">FAIR</s:String>
+    <s:String x:Key="PingBad">CRITICAL</s:String>
+    <s:String x:Key="PingDown">DOWN</s:String>
+
+    <s:String x:Key="TerminalTitle">// TERMINAL · EVENT LOG</s:String>
+    <s:String x:Key="BtnClear">CLEAR</s:String>
+
+    <s:String x:Key="ModesTitle">BYPASS PROFILES</s:String>
+    <s:String x:Key="ModesSub">Pick the profile that fits your ISP. Switching while connected restarts the engine instantly.</s:String>
+    <s:String x:Key="Recommended">RECOMMENDED</s:String>
+
+    <s:String x:Key="SettingsTitle">SYSTEM SETTINGS</s:String>
+    <s:String x:Key="SetGeneral">// GENERAL</s:String>
+    <s:String x:Key="SetAutoConnect">Auto-connect on launch</s:String>
+    <s:String x:Key="SetAutoStart">Start with Windows</s:String>
+    <s:String x:Key="SetStartTray">Start hidden in tray</s:String>
+    <s:String x:Key="SetCloseTray">Close button minimizes to tray</s:String>
+    <s:String x:Key="SetLanguage">Language / Dil</s:String>
+    <s:String x:Key="SetPing">// PING LIMITS</s:String>
+    <s:String x:Key="SetGoodMs">Good threshold (ms)</s:String>
+    <s:String x:Key="SetCritMs">Critical threshold (ms)</s:String>
+    <s:String x:Key="SetInterval">Interval (sec)</s:String>
+    <s:String x:Key="SetAlert">Notify on critical ping</s:String>
+    <s:String x:Key="SetTargets">Targets · one "Name = host" per line</s:String>
+    <s:String x:Key="BtnSave">SAVE</s:String>
+    <s:String x:Key="SetTools">// TOOLS</s:String>
+    <s:String x:Key="BtnFlushDns">FLUSH DNS CACHE</s:String>
+    <s:String x:Key="BtnKillEngine">FORCE-KILL ENGINE</s:String>
+    <s:String x:Key="SetAbout">// ABOUT</s:String>
+    <s:String x:Key="AboutText">Defeats DPI blocking at packet level without routing your traffic through another server. Engine: GoodbyeDPI (Apache 2.0) + WinDivert (LGPLv3).</s:String>
+
+    <s:String x:Key="Saved">settings saved</s:String>
+    <s:String x:Key="TrayShow">Open panel</s:String>
+    <s:String x:Key="TrayConnect">Connect</s:String>
+    <s:String x:Key="TrayDisconnect">Disconnect</s:String>
+    <s:String x:Key="TrayExit">Exit</s:String>
+    <s:String x:Key="TrayHidden">Running in background. Double-click the icon to open.</s:String>
+    <s:String x:Key="HighPingAlert">High ping: {0} ms (limit {1} ms)</s:String>
+    <s:String x:Key="EngineFail">Engine failed to start. See terminal for details.</s:String>
+</ResourceDictionary>

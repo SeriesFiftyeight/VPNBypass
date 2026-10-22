@@ -1,0 +1,65 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=System.Runtime">
+    <s:String x:Key="NavControl">KONTROL</s:String>
+    <s:String x:Key="NavModes">PROFİLLER</s:String>
+    <s:String x:Key="NavSettings">AYARLAR</s:String>
+    <s:String x:Key="StatusOnline">TÜNEL AÇIK</s:String>
+    <s:String x:Key="StatusOffline">TÜNEL KAPALI</s:String>
+
+    <s:String x:Key="CoreTitle">// ÇEKİRDEK DURUMU</s:String>
+    <s:String x:Key="StateActive">BYPASS AKTİF</s:String>
+    <s:String x:Key="StateIdle">BEKLEMEDE</s:String>
+    <s:String x:Key="StateBusy">BAĞLANIYOR...</s:String>
+    <s:String x:Key="StateActiveSub">DPI filtresi aşılıyor · 0 ms ek gecikme</s:String>
+    <s:String x:Key="StateIdleSub">Trafik korumasız. Başlatmak için BAĞLAN'a bas.</s:String>
+    <s:String x:Key="BtnConnect">▶  BAĞLAN</s:String>
+    <s:String x:Key="BtnDisconnect">■  BAĞLANTIYI KES</s:String>
+    <s:String x:Key="StatProfile">PROFİL</s:String>
+    <s:String x:Key="StatUptime">SÜRE</s:String>
+    <s:String x:Key="StatAvgPing">ORT. PING</s:String>
+    <s:String x:Key="StatLoss">KAYIP</s:String>
+
+    <s:String x:Key="PingTitle">// CANLI PING · GECİKME MATRİSİ</s:String>
+    <s:String x:Key="PingAverage">ORTALAMA</s:String>
+    <s:String x:Key="PingGood">İYİ</s:String>
+    <s:String x:Key="PingWarn">ORTA</s:String>
+    <s:String x:Key="PingBad">KRİTİK</s:String>
+    <s:String x:Key="PingDown">YOK</s:String>
+
+    <s:String x:Key="TerminalTitle">// TERMİNAL · OLAY GÜNLÜĞÜ</s:String>
+    <s:String x:Key="BtnClear">TEMİZLE</s:String>
+
+    <s:String x:Key="ModesTitle">BYPASS PROFİLLERİ</s:String>
+    <s:String x:Key="ModesSub">İnternet sağlayıcına uygun profili seç. Bağlıyken değiştirirsen motor anında yeniden başlar.</s:String>
+    <s:String x:Key="Recommended">ÖNERİLEN</s:String>
+
+    <s:String x:Key="SettingsTitle">SİSTEM AYARLARI</s:String>
+    <s:String x:Key="SetGeneral">// GENEL</s:String>
+    <s:String x:Key="SetAutoConnect">Açılışta otomatik bağlan</s:String>
+    <s:String x:Key="SetAutoStart">Windows ile başlat</s:String>
+    <s:String x:Key="SetStartTray">Tepside gizli başla</s:String>
+    <s:String x:Key="SetCloseTray">Kapat düğmesi tepsiye küçültsün</s:String>
+    <s:String x:Key="SetLanguage">Dil / Language</s:String>
+    <s:String x:Key="SetPing">// PING LİMİTLERİ</s:String>
+    <s:String x:Key="SetGoodMs">İyi eşik (ms)</s:String>
+    <s:String x:Key="SetCritMs">Kritik eşik (ms)</s:String>
+    <s:String x:Key="SetInterval">Ölçüm aralığı (sn)</s:String>
+    <s:String x:Key="SetAlert">Kritik pingde bildirim göster</s:String>
+    <s:String x:Key="SetTargets">Hedefler · satır başına "Ad = adres"</s:String>
+    <s:String x:Key="BtnSave">KAYDET</s:String>
+    <s:String x:Key="SetTools">// ARAÇLAR</s:String>
+    <s:String x:Key="BtnFlushDns">DNS ÖNBELLEĞİNİ TEMİZLE</s:String>
+    <s:String x:Key="BtnKillEngine">MOTORU ZORLA KAPAT</s:String>
+    <s:String x:Key="SetAbout">// HAKKINDA</s:String>
+    <s:String x:Key="AboutText">Trafiği başka bir sunucuya yönlendirmeden, paket seviyesinde DPI engellerini aşar. Motor: GoodbyeDPI (Apache 2.0) + WinDivert (LGPLv3).</s:String>
+
+    <s:String x:Key="Saved">ayarlar kaydedildi</s:String>
+    <s:String x:Key="TrayShow">Paneli aç</s:String>
+    <s:String x:Key="TrayConnect">Bağlan</s:String>
+    <s:String x:Key="TrayDisconnect">Bağlantıyı kes</s:String>
+    <s:String x:Key="TrayExit">Çıkış</s:String>
+    <s:String x:Key="TrayHidden">Arka planda çalışıyor. Açmak için simgeye çift tıkla.</s:String>
+    <s:String x:Key="HighPingAlert">Yüksek ping: {0} ms (limit {1} ms)</s:String>
+    <s:String x:Key="EngineFail">Motor başlatılamadı. Ayrıntılar terminalde.</s:String>
+</ResourceDictionary>

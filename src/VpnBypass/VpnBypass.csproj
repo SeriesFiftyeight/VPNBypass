@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\eye.ico</ApplicationIcon>
+    <AssemblyName>VPNBypass</AssemblyName>
+    <RootNamespace>VpnBypass</RootNamespace>
+    <AssemblyTitle>VPN Bypass - Zero-Lag DPI Unblocker</AssemblyTitle>
+    <Product>VPN Bypass</Product>
+    <Version>2.0.0</Version>
+    <Authors>SeriesFiftyeight</Authors>
+    <Copyright>Copyright © 2026 SeriesFiftyeight</Copyright>
+    <TieredPGO>true</TieredPGO>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- WPF and WinForms share type names (Application, Button...); keep WinForms explicit. -->
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\eye.ico" />
+    <None Include="..\..\engine\**\*" LinkBase="engine" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+  </ItemGroup>
+
+</Project>
