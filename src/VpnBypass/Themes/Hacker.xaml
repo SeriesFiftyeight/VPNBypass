@@ -339,15 +339,91 @@
         </Setter>
     </Style>
 
-    <!-- CRT scanline overlay tile -->
-    <DrawingBrush x:Key="Scanlines" TileMode="Tile" Viewport="0,0,4,4" ViewportUnits="Absolute" Viewbox="0,0,4,4" ViewboxUnits="Absolute">
-        <DrawingBrush.Drawing>
-            <GeometryDrawing Brush="#FF000000">
-                <GeometryDrawing.Geometry>
-                    <RectangleGeometry Rect="0,0,4,2" />
-                </GeometryDrawing.Geometry>
-            </GeometryDrawing>
-        </DrawingBrush.Drawing>
-    </DrawingBrush>
+
+    <!-- Big round connect button -->
+    <Style x:Key="PowerButton" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{StaticResource Neon}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse x:Name="face" Fill="#0C1A15" Stroke="{TemplateBinding Foreground}" StrokeThickness="2" />
+                        <Ellipse x:Name="hover" Fill="{TemplateBinding Foreground}" Opacity="0" />
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="hover" Property="Opacity" Value="0.08" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="hover" Property="Opacity" Value="0.16" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.55" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Underlined tab -->
+    <Style x:Key="Tab" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{StaticResource TextDim}" />
+        <Setter Property="FontFamily" Value="{StaticResource Mono}" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid Background="Transparent" Height="38">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Rectangle x:Name="bar" Height="2" VerticalAlignment="Bottom" Fill="{StaticResource Neon}" Opacity="0" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource Text}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource Neon}" />
+                            <Setter TargetName="bar" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Compact selectable row (profiles, DNS) -->
+    <Style x:Key="ChoiceRow" TargetType="RadioButton">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border x:Name="b" Background="Transparent" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="4" Padding="14,10">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource LineBright}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="b" Property="BorderBrush" Value="{StaticResource Neon}" />
+                            <Setter TargetName="b" Property="Background" Value="#1200FF9C" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Section" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Mono}" />
+        <Setter Property="FontSize" Value="10.5" />
+        <Setter Property="Foreground" Value="{StaticResource TextDim}" />
+        <Setter Property="Margin" Value="0,18,0,10" />
+    </Style>
 
 </ResourceDictionary>

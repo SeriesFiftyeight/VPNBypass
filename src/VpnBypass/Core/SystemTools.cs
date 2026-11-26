@@ -1,49 +1,48 @@
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace VpnBypass.Core;
 
 public static class SystemTools
 {
-    private const string TaskName = "VPNBypass";
+    private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
+    private const string AppName = "VPNBypass";
 
-    public static async Task<bool> FlushDnsAsync() => (await RunAsync("ipconfig", "/flushdns")).ExitCode == 0;
-
-    // A requireAdministrator exe is silently skipped by the Registry Run key,
-    // so autostart uses a logon task with highest privileges instead.
-    public static async Task<bool> IsAutoStartEnabledAsync() =>
-        (await RunAsync("schtasks", $"/Query /TN \"{TaskName}\"")).ExitCode == 0;
-
-    public static async Task<bool> SetAutoStartAsync(bool enable)
+    public static async Task<bool> FlushDnsAsync()
     {
-        if (!enable)
-            return (await RunAsync("schtasks", $"/Delete /TN \"{TaskName}\" /F")).ExitCode == 0;
-
-        string exe = Environment.ProcessPath ?? "";
-        string args = $"/Create /TN \"{TaskName}\" /TR \"\\\"{exe}\\\" --tray\" /SC ONLOGON /RL HIGHEST /F";
-        return (await RunAsync("schtasks", args)).ExitCode == 0;
+        DohResolver.Instance.ClearCache();
+        try
+        {
+            using var p = Process.Start(new ProcessStartInfo("ipconfig", "/flushdns") { UseShellExecute = false, CreateNoWindow = true });
+            if (p == null) return false;
+            await p.WaitForExitAsync();
+            return p.ExitCode == 0;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
-    private static async Task<(int ExitCode, string Output)> RunAsync(string file, string args)
+    // The engine runs without admin rights, so the plain per-user Run key works.
+    public static bool IsAutoStartEnabled()
+    {
+        using var key = Registry.CurrentUser.OpenSubKey(RunKey);
+        return key?.GetValue(AppName) is string v && v.Contains(Environment.ProcessPath ?? "\0", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static bool SetAutoStart(bool enable)
     {
         try
         {
-            using var p = Process.Start(new ProcessStartInfo
-            {
-                FileName = file,
-                Arguments = args,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            });
-            if (p == null) return (-1, "");
-            string output = await p.StandardOutput.ReadToEndAsync();
-            await p.WaitForExitAsync();
-            return (p.ExitCode, output);
+            using var key = Registry.CurrentUser.CreateSubKey(RunKey);
+            if (enable) key.SetValue(AppName, $"\"{Environment.ProcessPath}\" --tray");
+            else key.DeleteValue(AppName, throwOnMissingValue: false);
+            return true;
         }
-        catch (Exception ex)
+        catch
         {
-            return (-1, ex.Message);
+            return false;
         }
     }
 }

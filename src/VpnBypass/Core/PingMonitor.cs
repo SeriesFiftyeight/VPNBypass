@@ -1,10 +1,12 @@
 using System.Diagnostics;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace VpnBypass.Core;
 
-public enum PingQuality { Good, Warn, Bad, Down }
+/// <summary>NoIpv4: target is an IPv4 address but this machine has no usable IPv4 address.</summary>
+public enum PingQuality { Good, Warn, Bad, Down, NoIpv4 }
 
 public sealed class PingSample
 {
@@ -18,8 +20,8 @@ public sealed class PingMonitor : IDisposable
 {
     private CancellationTokenSource? _cts;
 
-    /// <summary>Fires on a thread-pool thread after every round.</summary>
-    public event Action<IReadOnlyList<PingSample>>? Round;
+    /// <summary>Fires on a thread-pool thread after every round. The flag says whether IPv4 is usable.</summary>
+    public event Action<IReadOnlyList<PingSample>, bool>? Round;
 
     public void Start()
     {
@@ -43,14 +45,21 @@ public sealed class PingMonitor : IDisposable
             var targets = s.PingTargets.ToList();
             try
             {
-                var results = await Task.WhenAll(targets.Select(t => MeasureAsync(t.Host, ct)));
+                bool ipv4 = NetworkState.HasIpv4;
+                var addresses = await Task.WhenAll(targets.Select(t => DohResolver.Instance.ResolveAsync(t.Host, ct)));
+
+                // Without IPv4, a target that only has IPv4 addresses can't be reached at all: that's
+                // a local network problem, not packet loss.
+                bool[] skip = addresses.Select(a => !ipv4 && a.Length > 0 && a.All(x => x.AddressFamily == AddressFamily.InterNetwork)).ToArray();
+
+                var results = await Task.WhenAll(targets.Select((_, i) => skip[i] ? Task.FromResult<long?>(null) : MeasureAsync(addresses[i], ct)));
                 var samples = targets.Select((t, i) => new PingSample
                 {
                     Target = t,
                     Ms = results[i],
-                    Quality = Classify(results[i], s)
+                    Quality = skip[i] ? PingQuality.NoIpv4 : Classify(results[i], s)
                 }).ToList();
-                Round?.Invoke(samples);
+                Round?.Invoke(samples, ipv4);
                 await Task.Delay(TimeSpan.FromSeconds(s.PingIntervalSec), ct);
             }
             catch (OperationCanceledException)
@@ -72,12 +81,16 @@ public sealed class PingMonitor : IDisposable
         _ => PingQuality.Bad
     };
 
-    public static async Task<long?> MeasureAsync(string host, CancellationToken ct = default)
+    /// <param name="addresses">Resolved with our own DoH, so poisoned ISP DNS can't send the ping to a block page.</param>
+    public static async Task<long?> MeasureAsync(IPAddress[] addresses, CancellationToken ct = default)
     {
+        var ip = NetworkState.Order(addresses).FirstOrDefault();
+        if (ip == null) return null;
+
         try
         {
             using var ping = new Ping();
-            var reply = await ping.SendPingAsync(host, TimeSpan.FromMilliseconds(1500), cancellationToken: ct);
+            var reply = await ping.SendPingAsync(ip, TimeSpan.FromMilliseconds(1500), cancellationToken: ct);
             if (reply.Status == IPStatus.Success) return Math.Max(1, reply.RoundtripTime);
         }
         catch (OperationCanceledException) { throw; }
@@ -88,9 +101,9 @@ public sealed class PingMonitor : IDisposable
         {
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
             timeout.CancelAfter(1500);
-            using var sock = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            using var sock = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             var sw = Stopwatch.StartNew();
-            await sock.ConnectAsync(host, 443, timeout.Token);
+            await sock.ConnectAsync(new IPEndPoint(ip, 443), timeout.Token);
             return Math.Max(1, sw.ElapsedMilliseconds);
         }
         catch (OperationCanceledException) when (ct.IsCancellationRequested) { throw; }

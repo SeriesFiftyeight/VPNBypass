@@ -13,7 +13,7 @@
     <RootNamespace>VpnBypass</RootNamespace>
     <AssemblyTitle>VPN Bypass - Zero-Lag DPI Unblocker</AssemblyTitle>
     <Product>VPN Bypass</Product>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
     <Authors>SeriesFiftyeight</Authors>
     <Copyright>Copyright © 2026 SeriesFiftyeight</Copyright>
     <TieredPGO>true</TieredPGO>
@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Resource Include="Assets\eye.ico" />
-    <None Include="..\..\engine\**\*" LinkBase="engine" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>
 
 </Project>

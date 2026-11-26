@@ -1,28 +1,24 @@
 @echo off
-:: VPN Bypass - emergency stop and network cleanup
+:: VPN Bypass - emergency stop: closes the app and restores Windows proxy settings
 chcp 65001 >nul
 
-net session >nul 2>&1
-if %errorlevel% neq 0 (
-    powershell -Command "Start-Process '%~f0' -Verb RunAs"
-    exit /b
+echo ===================================================
+echo   VPN Bypass :: stopping and cleaning up
+echo ===================================================
+
+taskkill /f /im VPNBypass.exe >nul 2>&1
+
+echo [1/2] Restoring Windows proxy settings...
+if exist "%~dp0VPNBypass.exe" (
+    start "" /wait "%~dp0VPNBypass.exe" --restore
+) else (
+    powershell -NoProfile -Command "$k='HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings'; $s=Get-ItemProperty $k; if ($s.AutoConfigURL -like 'http://127.0.0.1:*/proxy.pac') { Remove-ItemProperty $k AutoConfigURL }; if ($s.ProxyServer -like '127.0.0.1:*') { Set-ItemProperty $k ProxyEnable 0; Remove-ItemProperty $k ProxyServer }"
 )
 
-echo ===================================================
-echo   VPN Bypass :: stopping engine and cleaning up
-echo ===================================================
-
-taskkill /f /im VPNBypass.exe 2>nul
-taskkill /f /im goodbyedpi.exe 2>nul
-:: v1 leftovers
-taskkill /f /im dcbypass.exe 2>nul
-sc stop GoodbyeDPI >nul 2>&1
-sc stop WinDivert >nul 2>&1
-sc stop WinDivert14 >nul 2>&1
-
-echo [1/2] Flushing DNS cache...
+echo [2/2] Flushing DNS cache...
 ipconfig /flushdns >nul
 
-echo [2/2] Engine and drivers stopped.
+echo ===================================================
+echo   Done. Internet settings are back to normal.
 echo ===================================================
 timeout /t 3

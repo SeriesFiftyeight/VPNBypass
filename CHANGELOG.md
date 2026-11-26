@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.1.0
+
+### Kendi motorumuz
+- GoodbyeDPI ve WinDivert tamamen kaldırıldı. Yerlerine uygulamanın içinde çalışan kendi motorumuz geldi: yerel proxy, TLS kaydı bölme, TCP bölme ve TTL ile sıra bozma.
+- Kendi şifreli DNS çözümleyicimiz eklendi (DoH: Cloudflare, Google, Quad9, AdGuard). ISS DNS zehirlemesi ve IPv6-only ağlardaki DNS çökmesi çözüldü.
+- **Yönetici izni artık gerekmiyor.** Sürücü yok, antivirüs uyarısı yok.
+- Windows proxy ayarı resmi WinINET API'siyle yapılıyor, böylece Chrome ve Discord da motoru kullanıyor. Bekçi süreç sayesinde uygulama çökse ya da zorla kapatılsa bile internet kesilmiyor. Açılışta kalıntı ayarlar temizleniyor.
+- "En iyi yöntemi otomatik bul": tüm yöntemleri engelli sitelere karşı dener ve en iyisini seçer.
+- Bağlıyken yöntem değiştirmek motoru yeniden başlatmıyor, anında geçerli oluyor.
+
+### Arayüz
+- Uzun ince, sade panel: büyük bağlan/kes düğmesi, PING · PROFİL · GÜNLÜK · AYARLAR sekmeleri.
+- Göz animasyonu ve matrix efekti kaldırıldı. Daha az CPU ve bellek kullanılıyor.
+- Trafik sayacı eklendi.
+
+### Düzeltmeler
+- IPv4 olmayan ağlarda ping satırları "IPv4 YOK" gösteriyor ve paket kaybına sayılmıyor.
+- Ping artık kendi DNS'imizle çözülüyor. Zehirli DNS yüzünden engel sayfasına ping atılmıyor.
+- Varsayılan ping hedefleri IPv4 ve IPv6 ile çalışan alan adları oldu.
+- Windows ile başlat artık her durumda çalışıyor (kullanıcı Run anahtarı).
+
 ## v2.0.0
 
 Sıfırdan yeniden yazıldı. Proje adı **DC Bypass Pro → VPN Bypass** oldu.

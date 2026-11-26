@@ -11,7 +11,11 @@ public sealed class PingTarget
 
 public sealed class AppSettings
 {
-    public int PresetId { get; set; } = 1;
+    /// <summary>Bumped when defaults change in a way old files should pick up.</summary>
+    public int SettingsVersion { get; set; }
+    public int ProfileId { get; set; } = 1;
+    public string DnsProvider { get; set; } = "cloudflare";
+    public int ProxyPort { get; set; } = 8881;
     public bool AutoConnect { get; set; } = true;
     public bool StartInTray { get; set; }
     public bool CloseToTray { get; set; } = true;
@@ -25,11 +29,14 @@ public sealed class AppSettings
 
     public List<PingTarget> PingTargets { get; set; } =
     [
-        new() { Name = "Cloudflare", Host = "1.1.1.1" },
-        new() { Name = "Google", Host = "8.8.8.8" },
+        new() { Name = "Cloudflare", Host = "one.one.one.one" },
+        new() { Name = "Google", Host = "google.com" },
         new() { Name = "YouTube", Host = "youtube.com" },
-        new() { Name = "Yandex DNS", Host = "77.88.8.8" }
+        new() { Name = "Discord", Host = "discord.com" }
     ];
+
+    private const int CurrentVersion = 3;
+    private static readonly string[] V2DefaultHosts = ["1.1.1.1", "8.8.8.8", "youtube.com", "77.88.8.8"];
 
     private static readonly string FilePath = Path.Combine(AppContext.BaseDirectory, "vpnbypass.json");
     private static readonly JsonSerializerOptions Json = new() { WriteIndented = true };
@@ -45,6 +52,7 @@ public sealed class AppSettings
                 var s = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(FilePath));
                 if (s != null)
                 {
+                    s.Migrate();
                     s.Normalize();
                     return s;
                 }
@@ -54,11 +62,23 @@ public sealed class AppSettings
         {
             // Corrupt file: fall back to defaults.
         }
-        return new AppSettings();
+        return new AppSettings { SettingsVersion = CurrentVersion };
+    }
+
+    private void Migrate()
+    {
+        if (SettingsVersion >= CurrentVersion) return;
+        // v2 defaults were IPv4 literals that fail on IPv6-only links; move untouched lists to hostnames.
+        if (PingTargets.Select(x => x.Host).SequenceEqual(V2DefaultHosts))
+            PingTargets = new AppSettings().PingTargets;
+        SettingsVersion = CurrentVersion;
     }
 
     public void Normalize()
     {
+        if (!Profiles.All.Any(p => p.Id == ProfileId)) ProfileId = 1;
+        if (!DohResolver.Providers.Any(p => p.Id == DnsProvider)) DnsProvider = "cloudflare";
+        ProxyPort = Math.Clamp(ProxyPort, 1024, 65535);
         PingGoodMs = Math.Clamp(PingGoodMs, 5, 2000);
         PingCriticalMs = Math.Clamp(PingCriticalMs, PingGoodMs + 1, 5000);
         PingIntervalSec = Math.Clamp(PingIntervalSec, 1, 60);

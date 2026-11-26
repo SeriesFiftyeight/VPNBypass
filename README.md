@@ -1,92 +1,104 @@
-# 👁️ VPN Bypass — Zero-Lag DPI Unblocker
+# VPN Bypass: Zero-Lag DPI Unblocker
 
 <p align="center">
   <a href="https://github.com/SeriesFiftyeight/VPNBypass/releases/latest">
-    <img src="https://img.shields.io/badge/DOWNLOAD-VPN_Bypass_v2.0-00FF9C?style=for-the-badge&logo=windows&logoColor=black" alt="Download" />
+    <img src="https://img.shields.io/badge/DOWNLOAD-VPN_Bypass-00FF9C?style=for-the-badge&logo=windows&logoColor=black" alt="Download" />
   </a>
   <img src="https://img.shields.io/badge/Platform-Windows_10_%2F_11-informational?style=for-the-badge&logo=windows" alt="Windows" />
-  <img src="https://img.shields.io/badge/.NET-10-512BD4?style=for-the-badge" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/Admin-Not_required-00E5FF?style=for-the-badge" alt="No admin" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT" />
 </p>
 
-İnternet sağlayıcının **DPI (Deep Packet Inspection)** engellerini paket seviyesinde aşar.
-Trafiğin yabancı bir sunucuya yönlendirilmediği için **ek ping yoktur.** Bir VPN gibi çalışır,
-ama VPN değildir: bağlantın doğrudan hedef sunucuya gider.
+İnternet sağlayıcının **DPI (Deep Packet Inspection)** engellerini aşar. Trafiğin yabancı bir sunucuya
+gitmediği için **ek ping yoktur.** VPN gibi çalışır, ama VPN değildir: bağlantın doğrudan hedef sunucuya gider.
 
-> v2.0 sıfırdan yazıldı: yeni isim, hacker temalı arayüz, canlı ping matrisi ve
-> Discord'a bağlı olmayan genel kullanım.
+v2.1'den itibaren **tamamen kendi motorunu** kullanır. GoodbyeDPI, WinDivert ya da başka bir sürücü
+veya program yoktur. **Yönetici izni gerekmez.**
 
 ---
 
-## 📥 Hızlı Başlangıç
+## Hızlı Başlangıç
 
-1. **[Releases](https://github.com/SeriesFiftyeight/VPNBypass/releases/latest)** sayfasından `VPNBypass-v2.0.0.zip` dosyasını indir ve bir klasöre çıkar.
-2. `VPNBypass.exe` dosyasına çift tıkla (yönetici izni ister).
-3. **BAĞLAN**'a bas. Göz kırmızıdan yeşile döndüğünde bypass aktiftir.
+1. **[Releases](https://github.com/SeriesFiftyeight/VPNBypass/releases/latest)** sayfasından son zip'i indir ve bir klasöre çıkar.
+2. `VPNBypass.exe` dosyasını çalıştır.
+3. Ortadaki büyük düğmeye bas. **KORUMA AÇIK** yazısı çıkınca bypass aktiftir.
+4. Bir site hâlâ açılmıyorsa **PROFİL → En iyi yöntemi otomatik bul** düğmesine bas.
 
 **Gereksinim:** Windows 10/11 x64 ve [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0).
 
 ---
 
-## ✨ Özellikler
+## Nasıl çalışır?
 
-| | |
-|---|---|
-| 👁️ **Canlı göz göstergesi** | Hiç kırpmadan sağa sola tarayan göz. Kırmızı: kapalı, yeşil: aktif |
-| ⚡ **Canlı ping matrisi** | Birden çok hedefe paralel ping, geçmiş grafiği, ortalama ve paket kaybı |
-| 🎚️ **Ayarlanabilir ping limitleri** | İyi / kritik eşikleri sen belirlersin. Renkler, grafik çizgileri ve uyarılar buna göre değişir |
-| 🔔 **Kritik ping uyarısı** | Ortalama ping 3 ölçüm boyunca kritik eşiği aşarsa bildirim gösterir |
-| 🌐 **8 bypass profili** | Türk Telekom, TurkNet, Kablonet, Vodafone, Superonline, Agresif, Cloudflare DNS, Turbo |
-| 🚀 **Turbo / hızlandırma** | `--max-payload` ile büyük paketler (indirme, video) DPI işleminden muaf tutulur, CPU ve gecikme düşer |
-| 🖥️ **Terminal günlüğü** | Motorun çıktısı canlı akar |
-| 📥 **Tepsi modu** | Arka planda sessizce çalışır. Tepsi menüsünden bağlan / kes |
-| 🔁 **Windows ile başlat** | Görev Zamanlayıcı üzerinden, UAC sorusu olmadan |
-| 🌍 **TR / EN** | Anında dil değişimi |
-
----
-
-## 🗂️ Profiller
-
-| Kod | Profil | Kime göre |
-|---|---|---|
-| `STD-TR` ★ | Standart TR | Türk Telekom, TurkNet, Kablonet, Vodafone |
-| `SOL-4` ★ | Superonline Mod 4 | Superonline fiber |
-| `SOL-1` | Superonline Mod 1 · TTL 3 | Superonline alternatif |
-| `SOL-2` | Superonline Mod 2 · -5 | DNS yönlendirmesiz |
-| `SOL-3` | Superonline Mod 3 · TTL 3 + DNS | Superonline alternatif |
-| `MAX-9` | Agresif · Maksimum | Zorlu filtreler |
-| `CF-DNS` | Cloudflare DNS · TTL 5 | Cloudflare 1.1.1.1 tercih edenler |
-| `TURBO` | Saf Parçalama | En düşük gecikme, DNS'e dokunmaz |
-
----
-
-## 🛠️ Kaynaktan derleme
-
-```powershell
-# Geliştirme
-dotnet build src/VpnBypass
-
-# Yayın paketi (release/VPNBypass-v2.0.0.zip)
-powershell -ExecutionPolicy Bypass -File build/publish.ps1
+```text
+Tarayıcı / Discord ──► VPN Bypass motoru (127.0.0.1) ──► hedef sunucu
+                          │
+                          ├─ Şifreli DNS (DoH): site adını ISS'ye sormadan çözer
+                          └─ Desync: ilk paketi böler, DPI site adını göremez
 ```
 
-Proje yapısı:
+1. **Sistem proxy'si:** Uygulama, Windows'un kendi proxy API'siyle kullanıcı proxy'sini yerel motora
+   yönlendirir. Tarayıcılar ve Discord bunu anında görür. Görünmez bir bekçi süreç ana uygulamayı izler:
+   uygulama çökse ya da Görev Yöneticisi'nden kapatılsa bile eski ayarlarını geri yükler,
+   **internetin hiçbir zaman kesilmez.**
+2. **Şifreli DNS:** Site adları Cloudflare, Google, Quad9 veya AdGuard üzerinden HTTPS ile çözülür.
+   ISS'nin DNS zehirlemesi etkisiz kalır.
+3. **Desync:** DPI cihazları site adını bağlantının ilk paketinden okur (TLS SNI / HTTP Host). Motor bu
+   paketi, site adı hiçbir zaman tek parça görünmeyecek şekilde yeniden düzenler. Sunucu ise geçerli
+   bir bağlantı alır.
+
+---
+
+## Yöntemler
+
+| Kod | Yöntem | Teknik | Kime göre |
+|---|---|---|---|
+| `STD` | Standart | TLS kaydı bölme + TCP bölme | Türk Telekom, TurkNet, Vodafone, Kablonet |
+| `DSR` | Sıra Bozma | TLS bölme + ilk bayt + TTL=1 sıra bozma | Superonline, sıkı filtreler |
+| `MAX` | Agresif | Hepsi birden | Diğerleri çalışmazsa |
+| `TLS` | TLS Bölme | Sadece TLS kaydı bölme | En hafif |
+| `TCP` | TCP Bölme | Sadece TCP paketini bölme | Alternatif |
+
+**Otomatik bul**, her yöntemi engelli sitelere karşı dener ve en çok siteyi en hızlı açanı seçer.
+
+---
+
+## Özellikler
+
+- **Tek tık bağlan / kes** ile uzun ince, sade panel
+- **Canlı ping:** Birden çok hedef, geçmiş grafiği, ortalama, paket kaybı ve trafik sayacı
+- **Ayarlanabilir ping limitleri** ve kritik ping bildirimi
+- **IPv4 kesinti algılama:** Modem adres veremediğinde ne yapılacağını söyler
+- **Tepsi modu**, Windows ile başlatma, TR / EN
+
+---
+
+## Kaynaktan derleme
+
+```powershell
+dotnet build src/VpnBypass
+
+# Yayın paketi (release/VPNBypass-v2.1.0.zip)
+powershell -ExecutionPolicy Bypass -File build/publish.ps1
+# .NET kurulumu gerektirmeyen paket
+powershell -ExecutionPolicy Bypass -File build/publish.ps1 -SelfContained
+```
 
 ```text
 src/VpnBypass/
-├── Core/         # Motor (GoodbyeDPI), profiller, ayarlar, ping izleyici
-├── Controls/     # Göz animasyonu, matrix yağmuru, ping grafiği
-├── Themes/       # Hacker teması (renkler, stiller)
-├── Lang/         # tr.xaml / en.xaml
-└── MainWindow    # Kontrol · Profiller · Ayarlar
-engine/           # goodbyedpi.exe + WinDivert sürücüleri
-build/            # publish.ps1, make-icon.ps1
+├── Core/
+│   ├── ProxyServer.cs   # Yerel HTTP/CONNECT proxy
+│   ├── Desync.cs        # SNI bulma, TLS kaydı bölme, TCP bölme, sıra bozma
+│   ├── DohResolver.cs   # Kendi DNS-over-HTTPS çözümleyicimiz
+│   ├── SystemProxy.cs   # Windows proxy ayarı (WinINET API) + yedek/geri yükleme
+│   ├── AutoTuner.cs     # En iyi yöntemi bulur
+│   └── PingMonitor.cs   # Canlı ping ve limitler
+├── Themes/ Lang/ Controls/
+└── MainWindow           # Bağlan · Ping · Profil · Günlük · Ayarlar
 ```
 
 ---
 
-## ⚖️ Lisanslar
+## Lisans
 
-- **VPN Bypass**: MIT, © 2026 SeriesFiftyeight
-- **GoodbyeDPI**: ValdikSS, Apache License 2.0
-- **WinDivert**: LGPLv3
+MIT, © 2026 SeriesFiftyeight. Üçüncü parti motor veya sürücü içermez.

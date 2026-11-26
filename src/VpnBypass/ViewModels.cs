@@ -23,7 +23,7 @@ public static class QualityBrushes
     public static Brush For(PingQuality q) => (Brush)Application.Current.Resources[q switch
     {
         PingQuality.Good => "Neon",
-        PingQuality.Warn => "Amber",
+        PingQuality.Warn or PingQuality.NoIpv4 => "Amber",
         _ => "Red"
     }];
 
@@ -32,6 +32,7 @@ public static class QualityBrushes
         PingQuality.Good => "PingGood",
         PingQuality.Warn => "PingWarn",
         PingQuality.Bad => "PingBad",
+        PingQuality.NoIpv4 => "PingNoNet",
         _ => "PingDown"
     };
 }
@@ -64,18 +65,24 @@ public sealed class PingRow : Observable
 
     private PingQuality _quality = PingQuality.Down;
 
-    public void RefreshLabel() => Label = Loc.T(QualityBrushes.LabelKey(_quality));
+    private long? _ms;
+
+    public void RefreshLabel()
+    {
+        Label = Loc.T(QualityBrushes.LabelKey(_quality));
+        MsText = _quality == PingQuality.NoIpv4 ? Loc.T("PingNoIpv4") : _ms is long ms ? $"{ms} ms" : "TIMEOUT";
+    }
 
     public void Push(PingSample s, AppSettings cfg)
     {
         _quality = s.Quality;
+        _ms = s.Ms;
         _history.Enqueue(s.Ms);
         while (_history.Count > HistoryLength) _history.Dequeue();
         History = _history.ToArray();
 
-        MsText = s.Ms is long ms ? $"{ms} ms" : "TIMEOUT";
+        RefreshLabel();
         Brush = QualityBrushes.For(s.Quality);
-        Label = Loc.T(QualityBrushes.LabelKey(s.Quality));
         Bar = s.Ms is long v ? Math.Clamp(1 - v / (cfg.PingCriticalMs * 1.6), 0.06, 1) : 0;
     }
 }
