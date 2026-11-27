@@ -1,6 +1,6 @@
 # Builds the release package: release/VPNBypass/ and release/VPNBypass-v<version>.zip
 # -SelfContained bundles the .NET runtime (bigger zip, nothing to install for users).
-param([string]$Version = "2.1.0", [switch]$SelfContained)
+param([string]$Version = "2.1.1", [switch]$SelfContained)
 $ErrorActionPreference = "Stop"
 
 $root = Split-Path $PSScriptRoot -Parent

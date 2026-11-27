@@ -78,7 +78,7 @@ Tarayıcı / Discord ──► VPN Bypass motoru (127.0.0.1) ──► hedef sun
 ```powershell
 dotnet build src/VpnBypass
 
-# Yayın paketi (release/VPNBypass-v2.1.0.zip)
+# Yayın paketi (release/VPNBypass-v2.1.1.zip)
 powershell -ExecutionPolicy Bypass -File build/publish.ps1
 # .NET kurulumu gerektirmeyen paket
 powershell -ExecutionPolicy Bypass -File build/publish.ps1 -SelfContained

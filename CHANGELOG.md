@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.1.1
+
+### Düzeltmeler
+- Engelli olmayan bazı sitelerin açılmaması düzeltildi. Bölünmüş ilk paketi reddeden ya da cevapsız bırakan katı sunucular (e-Devlet, bankalar, meb.gov.tr) için otomatik geri dönüş eklendi: motor normal paketle yeniden bağlanır ve siteyi hatırlar.
+- Happy Eyeballs: IPv4 ve IPv6 adresleri paralel denenir, ilk bağlanan kullanılır. Bir adres cevap vermediğinde artık saniyelerce beklenmiyor.
+
 ## v2.1.0
 
 ### Kendi motorumuz
